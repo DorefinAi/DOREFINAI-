@@ -13,7 +13,12 @@ export const metadata: Metadata = {
 
 const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
 
-export const viewport: Viewport = { themeColor: "#07080a" };
+export const viewport: Viewport = {
+  themeColor: "#07080a",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

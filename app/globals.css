@@ -86,6 +86,7 @@ body {
 
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -433,7 +434,7 @@ textarea {
   position: fixed;
   inset: 0 0 auto;
   z-index: 50;
-  padding: 14px var(--gutter) 0;
+  padding: max(14px, env(safe-area-inset-top)) var(--gutter) 0;
   pointer-events: none;
 }
 
@@ -595,7 +596,7 @@ textarea {
   z-index: -1;
   display: flex;
   align-items: center;
-  padding: 96px var(--gutter) 40px;
+  padding: max(96px, calc(env(safe-area-inset-top) + 76px)) var(--gutter) max(40px, env(safe-area-inset-bottom));
   background: var(--menu);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
@@ -2101,7 +2102,7 @@ textarea:focus-visible {
 
   .why-panel {
     order: -1;
-    min-height: 260px;
+    min-height: clamp(230px, 56vw, 320px);
   }
 
   .showcase-flip > :first-child {
@@ -2138,6 +2139,24 @@ textarea:focus-visible {
 }
 
 @media (max-width: 760px) {
+  .nav {
+    padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right));
+  }
+
+  .nav-bar {
+    min-height: 54px;
+    padding-left: 14px;
+  }
+
+  .wordmark {
+    gap: 8px;
+    font-size: 1.0625rem;
+  }
+
+  .wordmark-mark {
+    width: 27px;
+  }
+
   .nav-links,
   .nav-cta {
     display: none;
@@ -2175,6 +2194,18 @@ textarea:focus-visible {
 
   .wire li {
     grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-inline: 14px;
+  }
+
+  .wire-stage {
+    min-width: 76px;
+    padding-inline: 8px;
+  }
+
+  .mock-head,
+  .mock figcaption {
+    padding-inline: 14px;
   }
 
   .footer-grid {
@@ -2195,6 +2226,172 @@ textarea:focus-visible {
 
   .hero .actions .text-link {
     justify-content: center;
+  }
+
+  .section {
+    padding-block: clamp(72px, 18vw, 96px);
+  }
+
+  .hero {
+    padding-block: max(108px, calc(env(safe-area-inset-top) + 84px)) clamp(48px, 12vw, 72px);
+  }
+
+  .page-head {
+    padding-block: max(118px, calc(env(safe-area-inset-top) + 94px)) clamp(56px, 12vw, 72px);
+  }
+
+  .head,
+  .hero-copy {
+    gap: 18px;
+  }
+
+  .hero-copy {
+    max-width: 38rem;
+  }
+
+  .trust {
+    justify-content: flex-start;
+    gap: 8px 20px;
+    margin-top: 40px;
+    text-align: left;
+  }
+
+  .why-item {
+    min-height: 64px;
+    padding-block: 18px;
+  }
+
+  .why-panel {
+    border-radius: 20px;
+  }
+
+  .why-caption {
+    left: 18px;
+    bottom: 16px;
+  }
+
+  .why-big {
+    right: 16px;
+  }
+
+  .chips {
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .chips li {
+    padding: 11px 16px;
+  }
+
+  .panel {
+    padding-block: 48px;
+  }
+
+  .panel .actions {
+    align-items: stretch;
+    width: min(100%, 340px);
+  }
+
+  .panel .actions .btn {
+    justify-content: space-between;
+  }
+
+  .contact-card dl {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .contact-card dt:not(:first-child) {
+    margin-top: 8px;
+  }
+
+  .footer-bar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-bottom: max(28px, calc(env(safe-area-inset-bottom) + 16px));
+  }
+
+  .admin-main {
+    padding-top: 28px;
+    padding-bottom: max(48px, calc(env(safe-area-inset-bottom) + 28px));
+  }
+
+  .admin-bar {
+    align-items: flex-start;
+    gap: 10px 16px;
+    padding-inline: max(16px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-right));
+  }
+
+  .admin-bar-end {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .editor-body {
+    gap: 22px;
+    margin-top: 22px;
+  }
+
+  .editor-pages {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .editor-pages button {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .t-hero {
+    font-size: clamp(2.35rem, 12vw, 3rem);
+  }
+
+  .t-h1 {
+    font-size: clamp(2.15rem, 11vw, 2.7rem);
+  }
+
+  .menu a {
+    font-size: clamp(1.9rem, 10vw, 2.25rem);
+  }
+
+  .mock {
+    font-size: 0.8125rem;
+  }
+
+  .fan {
+    padding-inline: 14px;
+  }
+
+  .fan-source,
+  .fan-out li {
+    padding: 12px;
+  }
+
+  .actions {
+    gap: 12px 18px;
+  }
+
+  .footer-legal {
+    gap: 16px;
+  }
+
+  .admin-tabs {
+    width: 100%;
+  }
+
+  .admin-tabs button {
+    flex: 1 1 0;
+    justify-content: center;
+    padding-inline: 10px;
+  }
+
+  .message,
+  .edit-group,
+  .admin-login-card {
+    padding: 18px;
   }
 }
 
