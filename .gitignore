@@ -1,0 +1,10 @@
+node_modules
+.next
+.env*.local
+data
+next-env.d.ts
+*.tsbuildinfo
+
+# Source material, kept out of the public repo
+websiteContent.docx
+WhatsApp Image*.jpeg
