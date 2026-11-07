@@ -145,32 +145,47 @@
   /* ---------- Tagline band: rows of wire copy drifting behind the line ---------- */
   var wall = document.querySelector("[data-wirewall]");
   if (wall) {
+    // time, district, source (WA = WhatsApp, FTP, MAIL), headline as the desk sees it (Hindi and English)
     var WIRE = [
-      ["09:42", "JPR", "Metro phase 2 tender documents released"],
-      ["09:38", "KOTA", "Yellow alert issued for six districts"],
-      ["09:31", "AJM", "State board revises Class 12 exam dates"],
-      ["09:27", "JDH", "Startup expo opens at the convention centre"],
-      ["09:19", "UDR", "Lake levels rise after overnight rain"],
-      ["09:12", "BKN", "Solar park adds a new 300 MW block"],
-      ["09:04", "ALW", "Highway stretch reopens after repairs"],
-      ["08:57", "JPR", "Heritage walk route extended for the season"],
-      ["08:49", "SKR", "Haveli conservation policy announced"],
-      ["08:41", "PALI", "Farmers get free seed kits for the rabi crop"]
+      ["09:42", "JPR", "WA", "जयपुर मेट्रो फेज-2 के टेंडर दस्तावेज़ जारी"],
+      ["09:38", "KOTA", "MAIL", "Yellow alert issued for six districts"],
+      ["09:31", "AJM", "FTP", "12वीं बोर्ड परीक्षा की तारीखों में बदलाव"],
+      ["09:27", "JDH", "WA", "Startup expo opens at the convention centre"],
+      ["09:19", "UDR", "FTP", "रातभर बारिश के बाद झीलों का जलस्तर बढ़ा"],
+      ["09:12", "BKN", "MAIL", "Solar park adds a new 300 MW block"],
+      ["09:04", "ALW", "WA", "मरम्मत के बाद हाईवे का हिस्सा फिर खुला"],
+      ["08:57", "JPR", "FTP", "Heritage walk route extended for the season"],
+      ["08:49", "SKR", "WA", "हवेली संरक्षण नीति की घोषणा"],
+      ["08:41", "PALI", "MAIL", "Farmers get free seed kits for the rabi crop"],
+      ["08:36", "BMR", "FTP", "बाड़मेर में तेल कुएं पर आग, दमकल मौके पर"],
+      ["08:30", "TONK", "WA", "Bisalpur dam gates opened after heavy inflow"],
+      ["08:22", "CHU", "FTP", "चूरू में पारा 4 डिग्री, शीतलहर की चेतावनी"],
+      ["08:15", "SGNR", "MAIL", "Canal water released for the rabi season"]
     ];
-    var ROWS = 7;
+    var ROWS = 8;
     for (var r = 0; r < ROWS; r++) {
       var rowEl = document.createElement("div");
-      rowEl.className = "wire-row" + (r === 3 ? " is-hot" : "");
-      rowEl.style.setProperty("--dur", (48 + r * 9) + "s");
+      rowEl.className = "wire-row" + (r === 3 || r === 5 ? " is-hot" : "");
+      rowEl.style.setProperty("--dur", (34 + r * 6) + "s");
       var html = "";
       for (var k = 0; k < WIRE.length; k++) {
         var item = WIRE[(k + r * 3) % WIRE.length];
-        var flag = (k + r) % 5 === 0 ? "<em>BIG</em> " : "";
-        html += "<span><b>" + item[0] + " · " + item[1] + "</b>" + flag + item[2] + "</span>";
+        var n = (k + r) % 6;
+        var flag = n === 0 ? '<em class="wb-big">BIG</em>' : n === 3 ? '<em class="wb-brk">BREAKING</em>' : "";
+        var hi = /[ऀ-ॿ]/.test(item[3]) ? ' lang="hi"' : "";
+        html += "<span><b>" + item[0] + " · " + item[1] + "</b><i>" + item[2] + "</i>" + flag + "<q" + hi + ">" + item[3] + "</q></span>";
       }
       rowEl.innerHTML = html + html; // doubled so the loop is seamless
       wall.appendChild(rowEl);
     }
+    // A story "just in": one headline lights up every couple of seconds, like a live desk
+    var lit = wall.querySelectorAll(".wire-row span");
+    setInterval(function () {
+      if (document.hidden || !lit.length) return;
+      var el = lit[Math.floor(Math.random() * lit.length)];
+      el.classList.add("is-new");
+      setTimeout(function () { el.classList.remove("is-new"); }, 1800);
+    }, 2200);
   }
 
   /* ---------- FAQ: open on hover for mouse users, click pins it open ---------- */
@@ -253,7 +268,8 @@
     paint();
   }
 
-  /* ---------- Hero demo: a wire story becomes a draft, then posts ---------- */
+  /* ---------- Hero demo: a reporter's file is found, tagged and approved, then Socia writes the X post ----------
+     Step times live on each .ds as data-at; the X post text types in after the desk approves. */
   var demo = document.querySelector("[data-demo]");
   if (demo) {
     var steps = Array.prototype.slice.call(demo.querySelectorAll(".ds"));
@@ -269,9 +285,9 @@
       if (i < typeWords.length - 1) typeEl.appendChild(document.createTextNode(" "));
       return span;
     });
-    var TYPE_START = 3600;
+    var TYPE_START = 5500;
     var TYPE_STEP = 70;
-    var APPROVE_AT = 6200;
+    var APPROVE_AT = 4300;
     var LOOP = 13500;
     var timers = [];
     var demoVisible = false;
@@ -330,10 +346,10 @@
     };
     document.querySelector("[data-strip-prev]").addEventListener("click", function () { step(-1); });
     document.querySelector("[data-strip-next]").addEventListener("click", function () { step(1); });
-    // Continuous drift. Cards are cloned once so the loop is seamless; it pauses while the
-    // reader hovers, focuses or touches the strip, and when it is off screen.
-    // Reduced motion: no drift and no clones, the strip is a plain scroller.
-    if (!reduceMotion.matches) {
+    // Continuous drift, on for everyone. Cards are cloned once so the loop is seamless. It pauses
+    // while the reader hovers, focuses or touches the strip, when it is off screen, and for good
+    // when the reader presses the pause button (WCAG 2.2.2).
+    {
       var originals = Array.prototype.slice.call(row.children);
       originals.forEach(function (card) {
         var copy = card.cloneNode(true);
@@ -347,7 +363,7 @@
       measure();
       window.addEventListener("resize", measure, { passive: true });
 
-      var hovering = false, focused = false, touching = false, clickHold = false;
+      var hovering = false, focused = false, touching = false, clickHold = false, userPaused = false;
       var stripVisible = false;
       var resumeTimer = null, clickTimer = null, touchTimer = null;
       var rafId = 0;
@@ -355,7 +371,7 @@
       var lastStripT = 0;
       var SPEED = 38; // px per second
       var canRun = function () {
-        return stripVisible && !hovering && !focused && !touching && !clickHold && !reduceMotion.matches && !document.hidden;
+        return stripVisible && !userPaused && !hovering && !focused && !touching && !clickHold && !document.hidden;
       };
       var drift = function (t) {
         rafId = 0;
@@ -399,6 +415,16 @@
       document.querySelector("[data-strip-prev]").addEventListener("click", hold);
       document.querySelector("[data-strip-next]").addEventListener("click", hold);
       document.addEventListener("visibilitychange", start);
+      var toggle = document.querySelector("[data-strip-toggle]");
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          userPaused = !userPaused;
+          toggle.setAttribute("aria-pressed", String(userPaused));
+          toggle.setAttribute("aria-label", userPaused ? "Play the examples" : "Pause the examples");
+          toggle.querySelector("i").className = "ph " + (userPaused ? "ph-play" : "ph-pause");
+          start();
+        });
+      }
       if ("IntersectionObserver" in window) {
         new IntersectionObserver(function (e) {
           stripVisible = e[e.length - 1].isIntersecting;

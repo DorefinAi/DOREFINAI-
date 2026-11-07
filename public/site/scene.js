@@ -209,8 +209,9 @@ function start(hero) {
   const GAP = V(0, -16, -80);
 
   /* ---------- Story lights ---------- */
-  const IN = lowPower ? 36 : 70;
-  const OUT = lowPower ? 24 : 48;
+  // Story dots into and out of the middle are off; words around the globe replace them.
+  const IN = 0;
+  const OUT = 0;
   const WIRE_DOTS = wires.length;
   const total = IN + OUT + WIRE_DOTS;
   const sigPos = new Float32Array(total * 3);
@@ -239,6 +240,55 @@ function start(hero) {
   }
   const outgoing = [];
   for (let i = 0; i < OUT; i++) outgoing.push({ side: i % 2, offset: rand(), speed: 0.1 + rand() * 0.08, dy: (rand() - 0.5) * 0.9, dz: (rand() - 0.5) * 0.9 });
+
+  /* ---------- Wire words: some story lights rise as words from the cities ---------- */
+  const WORDS = [
+    "#Jaipur", "Breaking", "Metro phase 2", "KOTA", "Yellow alert", "Footage · 3 clips",
+    "Exam dates", "Udaipur", "High court", "Monsoon", "Jodhpur", "Budget"
+  ].slice(0, lowPower ? 8 : 12);
+  const WORD_H = 1.9; // world units, about 13px at the horizon
+  const words = WORDS.map((text, i) => {
+    const c = document.createElement("canvas");
+    const ctx = c.getContext("2d");
+    const font = "600 44px Geist, system-ui, sans-serif";
+    ctx.font = font;
+    c.width = Math.ceil(ctx.measureText(text).width) + 24;
+    c.height = 64;
+    ctx.font = font;
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(text, 12, 34);
+    const map = new THREE.CanvasTexture(c);
+    map.colorSpace = THREE.SRGBColorSpace;
+    map.anisotropy = 4;
+    const mat = new THREE.SpriteMaterial({ map, transparent: true, depthWrite: false, opacity: 0 });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(WORD_H * (c.width / c.height), WORD_H, 1);
+    sprite.frustumCulled = false;
+    scene.add(sprite);
+    // Alternate sides, spread outward from the middle and down the curve of the globe
+    const side = i % 2 ? 1 : -1;
+    const rank = Math.floor(i / 2) / Math.max(1, Math.ceil(WORDS.length / 2) - 1);
+    const theta = side * (0.24 + rank * 0.36 + (rand() - 0.5) * 0.03);
+    const phi = -0.01 + rand() * 0.05;
+    const dir = V(Math.sin(theta), Math.cos(theta) * Math.cos(phi), Math.cos(theta) * Math.sin(phi)).normalize();
+    return { sprite, mat, canvas: c, text, dir, offset: (i * 0.37) % 1, speed: 0.07 + rand() * 0.02 };
+  });
+  // Redraw once the web font is ready so the words use Geist, not the fallback
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load("600 44px Geist").then(() => {
+      words.forEach((w) => {
+        const ctx = w.canvas.getContext("2d");
+        ctx.clearRect(0, 0, w.canvas.width, w.canvas.height);
+        ctx.font = "600 44px Geist, system-ui, sans-serif";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(w.text, 12, 34);
+        w.mat.map.needsUpdate = true;
+      });
+    }).catch(() => {});
+  }
+  let wordDark = true;
 
   const tmp = new THREE.Vector3();
   const from = new THREE.Vector3();
@@ -283,6 +333,17 @@ function start(hero) {
     });
     sigGeo.attributes.position.needsUpdate = true;
     sigGeo.attributes.color.needsUpdate = true;
+
+    // Words around the globe, kept clear of the middle where the headline sits.
+    words.forEach((w) => {
+      const t = (w.offset + time * w.speed) % 1;
+      // Each word sits over its spot on the globe, drifts up a little, and fades in and out
+      tmp.copy(w.dir).multiplyScalar(R + 4 + t * 6).add(EARTH);
+      w.sprite.position.copy(tmp);
+      const fade = Math.pow(Math.sin(t * Math.PI), 1.5);
+      w.mat.opacity = fade * (wordDark ? 0.85 : 0.75);
+      w.mat.color.copy(sigTint);
+    });
   }
 
   /* ---------- Lights ---------- */
@@ -323,6 +384,11 @@ function start(hero) {
     sigMat.needsUpdate = true;
     sigTint = tint.clone();
     sigBoost = dark ? 2.4 : 1;
+    wordDark = dark;
+    words.forEach((w) => {
+      w.mat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
+      w.mat.needsUpdate = true;
+    });
     bloom.strength = dark ? 0.6 : 0.15;
     bloom.threshold = dark ? 0.7 : 1.2;
     scene.environmentIntensity = dark ? 0.6 : 0.55;

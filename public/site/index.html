@@ -24,7 +24,7 @@
   <link rel="icon" href="/site/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600;800&display=swap">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="/site/styles.css">
   <script>
@@ -131,11 +131,10 @@
         <p class="hero-sub body-3">Vartmaan AI turns every incoming feed into an editable draft for your desk. Socia AI adapts the approved story for every platform. Your editors stay in charge.</p>
         <div class="hero-cta">
           <a class="btn btn--primary button-md" href="#book">Book a demo call <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
-          <p class="proof-line caption-2">Prerelease. Built in Jaipur with working newsroom teams.</p>
         </div>
       </div>
       <div class="hero-demo-wrap">
-        <figure class="demo" data-demo role="img" aria-label="How it works. A reporter files a story on WhatsApp, Vartmaan AI matches the footage and prepares a draft, an editor approves it, and Socia AI readies posts for X, Instagram, Facebook and YouTube.">
+        <figure class="demo" data-demo role="img" aria-label="Dorefin products at work, with sample data. In the Vartmaan AI intake, a reporter's WhatsApp story on the Jaipur Metro phase 2 tender arrives. The footage folder is found with three video files, the story is tagged Jaipur, AV, and the desk approves it. Socia AI then writes the X post in Hindi with hashtags, handles and a breaking news card, ready to copy, with Instagram, Facebook and YouTube versions queued.">
           <div class="demo-inner" aria-hidden="true">
             <div class="demo-bar">
               <span class="demo-brand"><svg class="brand-mark" viewBox="0 0 155 110" fill="none" aria-hidden="true"><circle cx="75" cy="55" r="47" stroke="currentColor" stroke-width="15"/><rect x="4" y="47" width="56" height="16" fill="currentColor"/><rect x="91" y="47" width="60" height="16" fill="currentColor"/></svg><span class="title-5">Dorefin</span></span>
@@ -151,56 +150,121 @@
               </span>
             </div>
             <div class="demo-grid">
+              <!-- 1. Vartmaan intake list -->
               <section class="demo-col demo-wire">
-                <p class="demo-label caption-3">Intake</p>
-                <ul class="demo-list">
-                  <li class="demo-item demo-item--new ds" data-at="300">
-                    <span class="demo-who"><span class="demo-avatar caption-5">RK</span><span class="title-5">Rohan K.</span><i class="ph ph-whatsapp-logo subtle"></i><span class="caption-5 subtle demo-time">09:42</span></span>
-                    <span class="body-5">Jaipur Metro phase 2 tender documents released</span>
-                    <span class="demo-tags"><span class="tag caption-5">JPR</span><span class="tag caption-5">AV</span><span class="tag tag--ok caption-5"><i class="ph ph-film-strip"></i>Footage</span></span>
+                <div class="in-filters">
+                  <span class="in-chip is-on caption-4">All sources</span>
+                  <span class="in-chip caption-4"><i class="ph ph-whatsapp-logo"></i>WhatsApp</span>
+                  <span class="in-chip caption-4"><i class="ph ph-envelope-simple"></i>Outlook</span>
+                </div>
+                <div class="in-filters in-filters--status">
+                  <span class="in-chip in-chip--soft caption-5">To review <b>3</b></span>
+                  <span class="in-chip in-chip--soft caption-5">Approved <b>6</b></span>
+                  <span class="in-chip in-chip--soft caption-5">All <b>9</b></span>
+                </div>
+                <ul class="in-list">
+                  <li class="in-row is-sel ds" data-at="300">
+                    <span class="av av--a caption-3">RK<i class="av-src ph ph-whatsapp-logo"></i></span>
+                    <span class="in-main">
+                      <span class="in-top"><span class="title-4">Rohan K.</span><span class="in-time is-new caption-5">09:42</span></span>
+                      <span class="in-bot"><span class="in-head hi" lang="hi">जयपुर मेट्रो फेज-2 के टेंडर जारी</span><i class="ph ph-video-camera ok"></i><span class="in-dot"></span></span>
+                    </span>
                   </li>
-                  <li class="demo-item">
-                    <span class="demo-who"><span class="demo-avatar caption-5">MS</span><span class="title-5">Meera S.</span><i class="ph ph-envelope-simple subtle"></i><span class="caption-5 subtle demo-time">09:38</span></span>
-                    <span class="body-5">Yellow alert issued for six districts</span>
-                    <span class="demo-tags"><span class="tag caption-5">KOTA</span><span class="tag caption-5">PKG</span></span>
+                  <li class="in-row">
+                    <span class="av av--b caption-3">MS<i class="av-src ph ph-envelope-simple"></i></span>
+                    <span class="in-main">
+                      <span class="in-top"><span class="title-4">Meera S.</span><span class="in-time is-new caption-5">09:38</span></span>
+                      <span class="in-bot"><span class="in-head hi" lang="hi">छह जिलों में यलो अलर्ट, तेज बारिश की चेतावनी</span><i class="ph ph-folder-simple ok"></i><span class="in-dot"></span></span>
+                    </span>
                   </li>
-                  <li class="demo-item">
-                    <span class="demo-who"><span class="demo-avatar caption-5">AV</span><span class="title-5">Arjun V.</span><i class="ph ph-whatsapp-logo subtle"></i><span class="caption-5 subtle demo-time">09:31</span></span>
-                    <span class="body-5">State board revises Class 12 exam dates</span>
-                    <span class="demo-tags"><span class="tag caption-5">AJM</span><span class="tag caption-5">AVB</span></span>
+                  <li class="in-row">
+                    <span class="av av--c caption-3">AV<i class="av-src ph ph-whatsapp-logo"></i></span>
+                    <span class="in-main">
+                      <span class="in-top"><span class="title-4">Arjun V.</span><span class="in-time caption-5">09:31</span></span>
+                      <span class="in-bot"><span class="in-head hi" lang="hi">12वीं बोर्ड परीक्षा की तारीखें बदलीं</span><i class="ph ph-clock subtle"></i></span>
+                    </span>
+                  </li>
+                  <li class="in-row">
+                    <span class="av av--b caption-3">PS<i class="av-src ph ph-whatsapp-logo"></i></span>
+                    <span class="in-main">
+                      <span class="in-top"><span class="title-4">Priya S.</span><span class="in-time caption-5">09:20</span></span>
+                      <span class="in-bot"><span class="in-head hi" lang="hi">उदयपुर में फतेहसागर झील ओवरफ्लो</span><i class="ph ph-video-camera-slash bad"></i></span>
+                    </span>
+                  </li>
+                  <li class="in-row">
+                    <span class="av av--c caption-3">PA<i class="av-src ph ph-envelope-simple"></i></span>
+                    <span class="in-main">
+                      <span class="in-top"><span class="title-4">PRO Ajmer</span><span class="in-time caption-5">09:04</span></span>
+                      <span class="in-bot"><span class="in-head">Press note: <span class="hi" lang="hi">कलेक्टर की बैठक</span></span><i class="ph ph-clock subtle"></i></span>
+                    </span>
                   </li>
                 </ul>
               </section>
-              <section class="demo-col demo-ai">
-                <p class="demo-label caption-3">Vartmaan AI</p>
-                <ol class="demo-log">
-                  <li class="ds caption-2" data-at="900"><i class="ph ph-check"></i>Footage matched · 3 clips, 217 MB</li>
-                  <li class="ds caption-2" data-at="1800"><i class="ph ph-check"></i>Tagged Jaipur (JPR) · City</li>
-                  <li class="ds caption-2" data-at="2700"><i class="ph ph-check"></i>Story ready for the desk</li>
-                </ol>
-                <article class="demo-draft ds" data-at="3200">
-                  <p class="demo-tags"><span class="tag tag--big caption-5">BIG</span><span class="caption-5 subtle">Jaipur · Desk · editable</span></p>
-                  <p class="title-2">Metro phase 2: tenders open for the next corridor</p>
-                  <p class="body-6 muted" data-demo-type>Tender documents for phase 2 of the Jaipur Metro are now public, opening bids for the next corridor. Key dates, scope and official quotes are pulled together from the reporter's file.</p>
-                  <div class="demo-actions">
-                    <span class="fake-btn button-xsm"><i class="ph ph-pencil-simple"></i>Edit story</span>
-                    <span class="fake-btn button-xsm">Reject</span>
-                    <span class="fake-btn fake-btn--solid button-xsm" data-demo-approve><i class="ph ph-check"></i>Approve</span>
-                    <span class="demo-approved caption-4 ds" data-at="6600"><i class="ph ph-seal-check"></i>Approved by the desk</span>
-                  </div>
-                </article>
-              </section>
-              <section class="demo-col demo-social">
-                <p class="demo-label caption-3">Socia AI · Post queue</p>
-                <div class="demo-stats">
-                  <span><b class="title-3">3</b><span class="caption-5 subtle">To post</span></span>
-                  <span><b class="title-3">12</b><span class="caption-5 subtle">Posted today</span></span>
+
+              <!-- 2. The open story -->
+              <section class="demo-col demo-story">
+                <div class="st-head">
+                  <span class="av av--a caption-3">RK<i class="av-src ph ph-whatsapp-logo"></i></span>
+                  <span class="st-who"><span class="title-4">Rohan K.</span><span class="caption-5 subtle">Reporter · WhatsApp</span></span>
                 </div>
-                <ul class="demo-list">
-                  <li class="demo-row ds" data-at="7300"><span class="post-icon"><i class="ph ph-x-logo"></i></span><span class="grow"><span class="title-4">X</span><span class="caption-5 subtle">Post + card · 248/280</span></span><span class="chip chip--plain caption-3">Ready</span></li>
-                  <li class="demo-row ds" data-at="7900"><span class="post-icon"><i class="ph ph-instagram-logo"></i></span><span class="grow"><span class="title-4">Instagram</span><span class="caption-5 subtle">Card + caption</span></span><span class="chip chip--plain caption-3">Ready</span></li>
-                  <li class="demo-row ds" data-at="8500"><span class="post-icon"><i class="ph ph-facebook-logo"></i></span><span class="grow"><span class="title-4">Facebook</span><span class="caption-5 subtle">Post</span></span><span class="chip chip--plain caption-3">Ready</span></li>
-                  <li class="demo-row ds" data-at="9100"><span class="post-icon"><i class="ph ph-youtube-logo"></i></span><span class="grow"><span class="title-4">YouTube</span><span class="caption-5 subtle">Short</span></span><span class="chip caption-3">18:30</span></li>
+                <div class="st-chat">
+                  <span class="st-date caption-5">7 NOV 2026</span>
+                  <div class="st-bubble ds" data-at="700">
+                    <p class="st-from caption-5"><b>Rohan K.</b> · Reporter</p>
+                    <p class="st-slug"><span class="st-file">071126_JPR_METRO_AV_ROHAN</span><span class="st-av ds" data-at="3300">AV</span><span class="st-dist caption-5 ds" data-at="3500"><i class="ph ph-map-pin"></i>Jaipur (JPR)</span></p>
+                    <p class="st-msg hi" lang="hi">जयपुर मेट्रो फेज-2 के टेंडर जारी। सीतापुरा से अंबाबाड़ी तक नया कॉरिडोर, बोली 2 दिसंबर तक।</p>
+                    <span class="st-stamp caption-5">09:42</span>
+                  </div>
+                  <div class="st-foot ds" data-at="1400">
+                    <div class="st-foot-head">
+                      <span class="title-4">Footage</span>
+                      <span class="st-found caption-5 ds" data-at="2700"><span></span>Found</span>
+                      <span class="st-mini caption-5"><i class="ph ph-arrows-clockwise"></i>Re-check</span>
+                    </div>
+                    <p class="st-path">/Jaipur/2026/NOV 2026/071126/071126_JPR_METRO_AV_ROHAN</p>
+                    <ul class="st-files caption-5">
+                      <li class="ds" data-at="1800"><i class="ph ph-file-video"></i><span class="st-fn">071126_JPR_METRO_AV_ROHAN_1.mp4</span><span class="st-sz">149.5 MB</span></li>
+                      <li class="ds" data-at="2100"><i class="ph ph-file-video"></i><span class="st-fn">071126_JPR_METRO_AV_ROHAN_2.mp4</span><span class="st-sz">46.0 MB</span></li>
+                      <li class="ds" data-at="2400"><i class="ph ph-file-video"></i><span class="st-fn">byte_jmrc.mp4</span><span class="st-sz">21.9 MB</span></li>
+                    </ul>
+                    <p class="st-total caption-5 subtle ds" data-at="2700">3 files, 217.4 MB in all</p>
+                  </div>
+                </div>
+                <div class="st-actions">
+                  <span class="demo-approved caption-4 ds" data-at="4700"><i class="ph ph-seal-check"></i>Approved by the desk</span>
+                  <span class="fake-btn button-xsm"><i class="ph ph-pencil-simple"></i>Edit story</span>
+                  <span class="fake-btn fake-btn--danger button-xsm"><i class="ph ph-x"></i>Reject</span>
+                  <span class="fake-btn fake-btn--solid button-xsm" data-demo-approve><i class="ph ph-check"></i>Approve</span>
+                </div>
+              </section>
+
+              <!-- 3. Socia: the X post -->
+              <section class="demo-col demo-social">
+                <div class="so-head"><i class="ph ph-x-logo"></i><span class="title-4">X ready posts</span></div>
+                <div class="demo-stats">
+                  <span><span class="caption-5 subtle">To post</span><b class="title-3">3</b></span>
+                  <span><span class="caption-5 subtle">Posted today</span><b class="title-3 ok">12</b></span>
+                </div>
+                <article class="xp ds" data-at="5200">
+                  <p class="xp-meta caption-5"><span class="tag tag--big">BIG</span><span>Jaipur</span><span class="subtle">Desk RK</span><span class="xp-time subtle">09:46</span></p>
+                  <div class="xp-body">
+                    <div class="xp-text">
+                      <p class="xp-post hi" lang="hi" data-demo-type>जयपुर मेट्रो फेज-2 के टेंडर जारी। सीतापुरा से अंबाबाड़ी तक बनेगा नया कॉरिडोर, बोली 2 दिसंबर तक जमा होंगी।</p>
+                      <p class="xp-hash ds" data-at="7000">#Jaipur #JaipurMetro #Rajasthan</p>
+                    </div>
+                    <span class="xcard ds" data-at="5600">
+                      <span class="xcard-title"><b lang="hi">बड़ी</b><span lang="hi">ख़बर</span></span>
+                      <span class="xcard-news" lang="hi">जयपुर मेट्रो फेज-2 के टेंडर जारी</span>
+                    </span>
+                  </div>
+                  <p class="xp-handles ds" data-at="7200"><span class="handle caption-5">@JaipurCityDesk<i class="ph ph-seal-check"></i></span><span class="handle caption-5">@RajTransportNews<i class="ph ph-seal-check"></i></span></p>
+                  <p class="xp-foot caption-5"><span class="subtle">As @YourNewsDesk</span><span class="xp-count">172/280</span></p>
+                  <span class="fake-btn fake-btn--solid xp-cta button-xsm ds" data-at="7600"><i class="ph ph-copy"></i>Copy &amp; Posted</span>
+                </article>
+                <ul class="so-rows">
+                  <li class="ds" data-at="8200"><i class="ph ph-instagram-logo"></i><span class="caption-4">Instagram</span><span class="caption-5 subtle">Card + caption</span><span class="chip chip--plain caption-5">Ready</span></li>
+                  <li class="ds" data-at="8600"><i class="ph ph-facebook-logo"></i><span class="caption-4">Facebook</span><span class="caption-5 subtle">Post</span><span class="chip chip--plain caption-5">Ready</span></li>
+                  <li class="ds" data-at="9000"><i class="ph ph-youtube-logo"></i><span class="caption-4">YouTube</span><span class="caption-5 subtle">Short</span><span class="chip chip--plain caption-5">18:30</span></li>
                 </ul>
               </section>
             </div>
@@ -255,6 +319,7 @@
           </li>
         </ul>
         <div class="strip-controls">
+          <button class="btn btn--icon" type="button" data-strip-toggle aria-pressed="false" aria-label="Pause the examples"><i class="ph ph-pause" aria-hidden="true"></i></button>
           <button class="btn btn--icon" type="button" data-strip-prev aria-label="Previous examples"><i class="ph ph-arrow-left" aria-hidden="true"></i></button>
           <button class="btn btn--icon" type="button" data-strip-next aria-label="Next examples"><i class="ph ph-arrow-right" aria-hidden="true"></i></button>
         </div>
