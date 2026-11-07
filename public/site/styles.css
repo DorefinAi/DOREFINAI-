@@ -966,8 +966,6 @@ select.input {
   color: var(--accent-on);
 }
 .post-media--square { aspect-ratio: 1; min-height: 0; }
-.strip-controls { display: flex; justify-content: center; gap: var(--s-75); }
-.strip-controls .btn--icon { border: 1px solid var(--line-2); }
 .outputs-note { margin-top: var(--s-200); text-align: center; }
 
 /* ---------- Before and after ---------- */
@@ -1143,11 +1141,13 @@ select.input {
 .av-src.ph-envelope-simple { color: var(--d-link); }
 .tag { display: inline-flex; align-items: center; gap: 3px; padding: 1px 6px; border: 1px solid var(--line-2); border-radius: var(--r-sm); color: var(--ink-2); font-size: 10px; line-height: 14px; font-weight: 600; }
 .tag--big { border-color: transparent; background: #ffd60a; color: #1a1a1a; }
-.fake-btn { display: inline-flex; align-items: center; gap: 4px; background: var(--surface); }
+.demo .fake-btn { display: inline-flex; align-items: center; gap: 4px; }
+.demo .fake-btn:not(.fake-btn--solid) { background: var(--surface); }
+.demo .fake-btn--solid { background: var(--ink); color: var(--bg); }
 .fake-btn--danger { border-color: var(--d-bad-line); color: var(--d-bad); }
 
 /* 1. Intake list */
-.demo-wire { gap: 0; padding: 0; }
+.demo-wire { gap: 0; padding: 0; overflow: hidden; }
 .in-filters { display: flex; flex-wrap: wrap; gap: 6px; padding: var(--s-100) var(--s-100) 0; }
 .in-filters--status { padding-bottom: var(--s-100); border-bottom: 1px solid var(--line); }
 .in-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px var(--s-75); border-radius: var(--r-full); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
@@ -1223,7 +1223,7 @@ select.input {
 .st-fn { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--ink); }
 .st-sz { flex: none; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .st-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--s-75); padding: var(--s-100) var(--s-200); border-top: 1px solid var(--line); }
-.demo-approved { display: inline-flex; align-items: center; gap: var(--s-50); margin-right: auto; color: var(--d-ok); }
+.demo-approved { display: inline-flex; align-items: center; gap: var(--s-50); align-self: center; padding: 2px var(--s-100); border: 1px solid var(--d-ok); border-radius: var(--r-full); background: var(--d-ok-soft); color: var(--d-ok); }
 [data-demo-approve] { transition: transform 300ms var(--ease), opacity 300ms var(--ease); }
 [data-demo-approve].is-pressed { transform: scale(0.94); opacity: 0.6; }
 
@@ -1312,7 +1312,7 @@ select.input {
 @media (max-width: 479px) {
   .st-mini, .st-path { display: none; }
   .st-actions { padding-inline: var(--s-100); }
-  .st-actions .demo-approved { flex-basis: 100%; }
+  .so-rows { display: none; }
 }
 
 /* Demo steps appear in sequence; the typing reveals word by word */
@@ -1731,3 +1731,22 @@ select.input {
   .wire-row { animation-duration: calc(var(--dur, 60s) * 3); }
   .wire-row span { transition: none; }
 }
+
+/* ---------- Phones: no demo card, the globe fills the hero ---------- */
+@media (max-width: 767px) {
+  .hero-demo-wrap { display: none; }
+  .hero3d { min-height: 100vh; min-height: 100svh; }
+}
+
+/* ---------- Inner pages (about, privacy, terms) ---------- */
+.page-hero { padding-top: calc(var(--s-900) + var(--s-700)); }
+.about-story { display: grid; gap: var(--s-400); }
+@media (min-width: 900px) { .about-story { grid-template-columns: 1fr 1.4fr; align-items: start; } }
+.prose { display: flex; flex-direction: column; gap: var(--s-200); max-width: 680px; }
+.values { display: grid; gap: var(--s-400) var(--s-500); }
+@media (min-width: 768px) { .values { grid-template-columns: 1fr 1fr; } }
+.values li { display: flex; flex-direction: column; gap: var(--s-75); padding-top: var(--s-200); border-top: 1px solid var(--line); }
+.legal { max-width: 760px; }
+.legal-updated { margin: var(--s-100) 0 var(--s-500); }
+.legal-section { display: flex; flex-direction: column; gap: var(--s-100); padding: var(--s-300) 0; border-top: 1px solid var(--line); }
+.next-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--s-300); margin-top: var(--s-300); }

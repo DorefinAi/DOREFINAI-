@@ -335,17 +335,6 @@
   /* ---------- Outputs strip ---------- */
   var row = document.querySelector("[data-strip-row]");
   if (row) {
-    var step = function (dir) {
-      var card = row.querySelector(".post-card");
-      var gap = parseFloat(getComputedStyle(row).columnGap) || 0;
-      var amount = card ? card.getBoundingClientRect().width + gap : 300;
-      var atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 4;
-      var behavior = reduceMotion.matches ? "auto" : "smooth";
-      if (dir > 0 && atEnd) row.scrollTo({ left: 0, behavior: behavior });
-      else row.scrollBy({ left: dir * amount, behavior: behavior });
-    };
-    document.querySelector("[data-strip-prev]").addEventListener("click", function () { step(-1); });
-    document.querySelector("[data-strip-next]").addEventListener("click", function () { step(1); });
     // Continuous drift, on for everyone. Cards are cloned once so the loop is seamless. It pauses
     // while the reader hovers, focuses or touches the strip, when it is off screen, and for good
     // when the reader presses the pause button (WCAG 2.2.2).
@@ -412,8 +401,7 @@
         clearTimeout(clickTimer);
         clickTimer = setTimeout(function () { clickHold = false; start(); }, 3000);
       };
-      document.querySelector("[data-strip-prev]").addEventListener("click", hold);
-      document.querySelector("[data-strip-next]").addEventListener("click", hold);
+      document.querySelectorAll("[data-strip-prev], [data-strip-next]").forEach(function (b) { b.addEventListener("click", hold); });
       document.addEventListener("visibilitychange", start);
       var toggle = document.querySelector("[data-strip-toggle]");
       if (toggle) {
@@ -517,6 +505,13 @@
 
   /* ---------- Product links preselect the form ---------- */
   var productSelect = document.getElementById("f-product");
+  // Links like /contact?product=Socia%20AI preselect the product on the booking form
+  try {
+    var wanted = new URLSearchParams(window.location.search).get("product");
+    if (productSelect && wanted && Array.prototype.some.call(productSelect.options, function (o) { return o.value === wanted; })) {
+      productSelect.value = wanted;
+    }
+  } catch (e) {}
   document.querySelectorAll("[data-product]").forEach(function (a) {
     a.addEventListener("click", function () {
       if (productSelect) productSelect.value = a.getAttribute("data-product");
