@@ -10,7 +10,7 @@ export default function SocialMock() {
     <figure className="mock">
       <div className="mock-head">
         Publishing plan
-        <span className="mock-tag">Socia-L AI</span>
+        <span className="mock-tag">Socia AI</span>
       </div>
       <div className="fan">
         <div className="fan-source">

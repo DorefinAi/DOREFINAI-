@@ -138,16 +138,16 @@ export const defaultContent = {
       },
       {
         id: "social",
-        name: "Socia-L AI",
+        name: "Socia AI",
         tagline: "Your Digital Presence, Amplified.",
         short:
           "Automation for digital content teams. Create, schedule, and optimise across platforms with AI that knows your brand voice.",
         description:
-          "Socia-L AI is intelligent digital automation for teams running a multi-platform presence. Create, adapt, schedule, and optimise across every channel, with your brand voice consistent and your team in control.",
+          "Socia AI is intelligent digital automation for teams running a multi-platform presence. Create, adapt, schedule, and optimise across every channel, with your brand voice consistent and your team in control.",
         capabilities: [
           {
             title: "Multi-platform publishing",
-            text: "Create once. Publish everywhere. Socia-L tailors format, tone, and length for each platform automatically.",
+            text: "Create once. Publish everywhere. Socia tailors format, tone, and length for each platform automatically.",
           },
           {
             title: "Brand-aware content",
@@ -268,7 +268,7 @@ export const defaultContent = {
       {
         question: "What does Dorefin AI build?",
         answer:
-          "AI products for media and digital teams. Vartmaan AI automates newsroom work from wire ingestion to assignment-ready drafts. Socia-L AI helps content teams create, adapt, schedule, and optimise across platforms.",
+          "AI products for media and digital teams. Vartmaan AI automates newsroom work from wire ingestion to assignment-ready drafts. Socia AI helps content teams create, adapt, schedule, and optimise across platforms.",
       },
       {
         question: "Do we have to replace the systems we already use?",
@@ -283,12 +283,12 @@ export const defaultContent = {
       {
         question: "Who are the products for?",
         answer:
-          "Vartmaan AI is for news channels, digital newsrooms, wire services, and media houses. Socia-L AI is for digital media teams, social media managers, brand teams, and content agencies.",
+          "Vartmaan AI is for news channels, digital newsrooms, wire services, and media houses. Socia AI is for digital media teams, social media managers, brand teams, and content agencies.",
       },
       {
         question: "Can we use the products today?",
         answer:
-          "Not yet. Vartmaan AI and Socia-L AI are both in pre-release. Register your interest from the contact page, tell us what you’re working on, and we’ll reply personally within 24 hours.",
+          "Not yet. Vartmaan AI and Socia AI are both in pre-release. Register your interest from the contact page, tell us what you’re working on, and we’ll reply personally within 24 hours.",
       },
       {
         question: "Where is Dorefin AI based?",
@@ -357,7 +357,7 @@ export const defaultContent = {
         "Exploring what AI can do for your team? Want to hear when our products open up? Just have a question? Reach out. We answer every message personally. No bots, no ticket numbers.",
     },
     formHeading: "Send us a message",
-    interests: ["Vartmaan AI", "Socia-L AI", "Both", "General Inquiry"],
+    interests: ["Vartmaan AI", "Socia AI", "Both", "General Inquiry"],
     submitLabel: "Send message",
     confirmation:
       "Thank you for reaching out! We’ll get back to you within 24 hours. If it’s urgent, call us directly at +91 9019193141.",

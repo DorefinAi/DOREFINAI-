@@ -8,7 +8,7 @@ const sans = Geist({ subsets: ["latin"], variable: "--font-sans", display: "swap
 export const metadata: Metadata = {
   title: { default: "Dorefin AI | AI products for newsrooms and digital teams", template: "%s | Dorefin AI" },
   description:
-    "Dorefin AI builds purpose-built AI products for media and digital teams: Vartmaan AI for newsrooms and Socia-L AI for digital content. Based in Jaipur, India.",
+    "Dorefin AI builds purpose-built AI products for media and digital teams: Vartmaan AI for newsrooms and Socia AI for digital content. Based in Jaipur, India.",
 };
 
 const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;

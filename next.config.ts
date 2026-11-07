@@ -2,6 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // The homepage is the static redesign in public/site. Other routes (privacy, terms,
+  // admin, api) are still served by the Next.js app.
+  async rewrites() {
+    return {
+      beforeFiles: [{ source: "/", destination: "/site/index.html" }],
+    };
+  },
   async headers() {
     return [
       {

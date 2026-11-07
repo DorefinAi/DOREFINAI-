@@ -21,12 +21,12 @@
   <meta name="twitter:description" content="Two AI products for newsrooms and digital content teams, built in Jaipur.">
   <meta name="twitter:image" content="https://dorefinai.com/opengraph-image">
 
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/site/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/site/styles.css">
   <script>
     (function () {
       var d = document.documentElement;
@@ -386,23 +386,23 @@
             </div>
             <div class="shots-view">
               <figure class="shot is-active" role="tabpanel" id="shot-v-overview" aria-labelledby="tab-v-overview" data-url="vartmaan / desk / today">
-                <img src="screens/vartmaan-overview.webp" width="1440" height="900" alt="Vartmaan AI assignment desk overview: stories in, breaking items, approvals, footage found, stories by hour, district and type, and connected sources.">
+                <img src="/site/screens/vartmaan-overview.webp" width="1440" height="900" alt="Vartmaan AI assignment desk overview: stories in, breaking items, approvals, footage found, stories by hour, district and type, and connected sources.">
                 <figcaption class="body-6 muted">The assignment desk at a glance: stories in, breaking items, footage found and every connected source.</figcaption>
               </figure>
               <figure class="shot" role="tabpanel" id="shot-v-intake" aria-labelledby="tab-v-intake" data-url="vartmaan / desk / intake" hidden>
-                <img src="screens/vartmaan-intake.webp" width="1440" height="900" loading="lazy" alt="Vartmaan AI intake inbox: a reporter's story with its footage folder matched automatically, ready to edit, reject or approve.">
+                <img src="/site/screens/vartmaan-intake.webp" width="1440" height="900" loading="lazy" alt="Vartmaan AI intake inbox: a reporter's story with its footage folder matched automatically, ready to edit, reject or approve.">
                 <figcaption class="body-6 muted">Every reporter message from WhatsApp and email in one inbox, with the footage already matched from the newsroom share.</figcaption>
               </figure>
               <figure class="shot" role="tabpanel" id="shot-s-dashboard" aria-labelledby="tab-s-dashboard" data-url="socia / digital dashboard" hidden>
-                <img src="screens/socia-dashboard.webp" width="1440" height="900" loading="lazy" alt="Socia AI digital dashboard: total reach, engagements, engagement rate, follower growth and posts across X, YouTube, Instagram and Facebook.">
+                <img src="/site/screens/socia-dashboard.webp" width="1440" height="900" loading="lazy" alt="Socia AI digital dashboard: total reach, engagements, engagement rate, follower growth and posts across X, YouTube, Instagram and Facebook.">
                 <figcaption class="body-6 muted">Reach, engagement and follower growth across X, YouTube, Instagram and Facebook, compared with the period before.</figcaption>
               </figure>
               <figure class="shot" role="tabpanel" id="shot-s-queue" aria-labelledby="tab-s-queue" data-url="socia / post studio / x" hidden>
-                <img src="screens/socia-queue.webp" width="1440" height="900" loading="lazy" alt="Socia AI post queue: newsroom stories already written as X posts, with counts to post, needing a check and posted today.">
+                <img src="/site/screens/socia-queue.webp" width="1440" height="900" loading="lazy" alt="Socia AI post queue: newsroom stories already written as X posts, with counts to post, needing a check and posted today.">
                 <figcaption class="body-6 muted">Newsroom files arrive already written as platform-ready posts. Check, open, publish, with keyboard shortcuts for speed.</figcaption>
               </figure>
               <figure class="shot" role="tabpanel" id="shot-s-analytics" aria-labelledby="tab-s-analytics" data-url="socia / analytics" hidden>
-                <img src="screens/socia-analytics.webp" width="1440" height="900" loading="lazy" alt="Socia AI desk analytics: stories received, approved, posted and rejected per day, and posts by district and category.">
+                <img src="/site/screens/socia-analytics.webp" width="1440" height="900" loading="lazy" alt="Socia AI desk analytics: stories received, approved, posted and rejected per day, and posts by district and category.">
                 <figcaption class="body-6 muted">What the desk received, approved, posted and rejected, by day, district and category.</figcaption>
               </figure>
             </div>
@@ -603,9 +603,9 @@
         </div>
 
         <div class="card reveal">
-          <!-- Set data-endpoint to a form service URL (for example Formspree) to send requests directly.
-               Without one, the form opens the visitor's email app with the details filled in. -->
-          <form class="form" id="demo-form" novalidate data-endpoint="" data-to="arathore@dorefinai.com">
+          <!-- Posts to the Next.js /api/contact route; requests appear in /admin under Messages.
+               If data-endpoint is empty, the form opens the visitor's email app instead. -->
+          <form class="form" id="demo-form" novalidate data-endpoint="/api/contact" data-to="arathore@dorefinai.com">
             <div class="field-row">
               <div class="field">
                 <label class="title-4" for="f-name">Your name</label>
@@ -693,7 +693,7 @@
   </footer>
 
   <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/" } }</script>
-  <script src="app.js"></script>
-  <script type="module" src="scene.js"></script>
+  <script src="/site/app.js"></script>
+  <script type="module" src="/site/scene.js"></script>
 </body>
 </html>

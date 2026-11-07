@@ -503,7 +503,10 @@
 
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var rules = {
-    name: function (v) { return v ? "" : "Enter your name."; },
+    name: function (v) {
+      if (!v) return "Enter your name.";
+      return v.length >= 2 ? "" : "Enter your full name.";
+    },
     email: function (v) {
       if (!v) return "Enter your work email.";
       return EMAIL.test(v) ? "" : "This email looks incomplete. Use a format like name@company.com.";
@@ -588,19 +591,37 @@
       return;
     }
 
+    // Shape expected by the Next.js /api/contact route (name, email, company, interest, message).
+    var interestMap = { "Vartmaan AI": "Vartmaan AI", "Socia AI": "Socia AI", "Both products": "Both", "Not sure yet": "General Inquiry" };
+    var payload = {
+      name: data.name,
+      email: data.email,
+      company: data.org,
+      interest: interestMap[data.product] || "General Inquiry",
+      message: "Demo call request. Interested in: " + data.product + "." + (data.message ? "\n\n" + data.message : "")
+    };
+
     setLoading(true);
     fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(data)
+      body: JSON.stringify(payload)
     })
       .then(function (res) {
-        if (!res.ok) throw new Error("Request failed");
-        form.reset();
-        showStatus("Request sent. We will reply to " + data.email + " within 24 hours.");
+        if (res.ok) {
+          form.reset();
+          showStatus("Request sent. We will reply to " + data.email + " within 24 hours.");
+          return;
+        }
+        return res.json().catch(function () { return {}; }).then(function (body) {
+          var err = new Error("Request failed");
+          err.userMessage = body && body.error;
+          throw err;
+        });
       })
-      .catch(function () {
-        showStatus("We could not send your request. Check your connection and try again, or email " + form.getAttribute("data-to") + ".", true);
+      .catch(function (err) {
+        var msg = (err && err.userMessage) || "We could not send your request. Check your connection and try again.";
+        showStatus(msg + " You can also email " + form.getAttribute("data-to") + ".", true);
       })
       .then(function () { setLoading(false); });
   });
