@@ -877,6 +877,36 @@ select.input {
   mask-image: linear-gradient(to bottom, #000 82%, transparent);
 }
 .hero3d.is-ready .hero3d-canvas { opacity: 1; }
+/* Words around the globe: real text over the canvas so they stay sharp */
+.hero3d-words {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 100vh;
+  height: 100svh;
+  pointer-events: none;
+  overflow: hidden;
+}
+/* Small solid tags: whole-pixel positions, no glow and no blur filters, so the text renders crisp */
+.hero3d-word {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.875rem;
+  line-height: 1.25;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ink);
+  opacity: 0;
+  -webkit-font-smoothing: antialiased;
+}
+/* Phones: the globe can be swiped sideways to turn it; vertical swipes still scroll */
+@media (max-width: 767px) {
+  .hero3d { touch-action: pan-y; }
+}
 .hero3d-content {
   position: relative;
   width: 100%;

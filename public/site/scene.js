@@ -245,50 +245,39 @@ function start(hero) {
   const WORDS = [
     "#Jaipur", "Breaking", "Metro phase 2", "KOTA", "Yellow alert", "Footage · 3 clips",
     "Exam dates", "Udaipur", "High court", "Monsoon", "Jodhpur", "Budget"
-  ].slice(0, lowPower ? 8 : 12);
-  const WORD_H = 1.9; // world units, about 13px at the horizon
+  ].slice(0, window.innerWidth < 768 ? 4 : lowPower ? 8 : 12);
+  // Phones see a narrow slice of the horizon, so their few words sit closer to the middle
+  const narrow = window.innerWidth < 768;
+  // Words are real HTML text laid over the canvas, so they stay sharp at every zoom level
+  // and are not softened by the bloom pass. Each one is pinned to a 3D point and projected per frame.
+  const wordLayer = document.createElement("div");
+  wordLayer.className = "hero3d-words";
+  wordLayer.setAttribute("aria-hidden", "true");
+  canvas.after(wordLayer);
   const words = WORDS.map((text, i) => {
-    const c = document.createElement("canvas");
-    const ctx = c.getContext("2d");
-    const font = "600 44px Geist, system-ui, sans-serif";
-    ctx.font = font;
-    c.width = Math.ceil(ctx.measureText(text).width) + 24;
-    c.height = 64;
-    ctx.font = font;
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#ffffff";
-    ctx.fillText(text, 12, 34);
-    const map = new THREE.CanvasTexture(c);
-    map.colorSpace = THREE.SRGBColorSpace;
-    map.anisotropy = 4;
-    const mat = new THREE.SpriteMaterial({ map, transparent: true, depthWrite: false, opacity: 0 });
-    const sprite = new THREE.Sprite(mat);
-    sprite.scale.set(WORD_H * (c.width / c.height), WORD_H, 1);
-    sprite.frustumCulled = false;
-    scene.add(sprite);
+    const el = document.createElement("span");
+    el.className = "hero3d-word";
+    el.textContent = text;
+    wordLayer.appendChild(el);
     // Alternate sides, spread outward from the middle and down the curve of the globe
     const side = i % 2 ? 1 : -1;
     const rank = Math.floor(i / 2) / Math.max(1, Math.ceil(WORDS.length / 2) - 1);
-    const theta = side * (0.24 + rank * 0.36 + (rand() - 0.5) * 0.03);
+    const theta = side * ((narrow ? 0.1 + rank * 0.12 : 0.24 + rank * 0.36) + (rand() - 0.5) * 0.03);
     const phi = -0.01 + rand() * 0.05;
     const dir = V(Math.sin(theta), Math.cos(theta) * Math.cos(phi), Math.cos(theta) * Math.sin(phi)).normalize();
-    return { sprite, mat, canvas: c, text, dir, offset: (i * 0.37) % 1, speed: 0.07 + rand() * 0.02 };
+    // On phones the inner pair floats higher so the two words on each side never overlap
+    const lift = narrow && rank === 0 ? 5 : 0;
+    return { el, dir, lift, offset: (i * 0.37) % 1, speed: 0.07 + rand() * 0.02, hw: 0, hh: 0 };
   });
-  // Redraw once the web font is ready so the words use Geist, not the fallback
-  if (document.fonts && document.fonts.load) {
-    document.fonts.load("600 44px Geist").then(() => {
-      words.forEach((w) => {
-        const ctx = w.canvas.getContext("2d");
-        ctx.clearRect(0, 0, w.canvas.width, w.canvas.height);
-        ctx.font = "600 44px Geist, system-ui, sans-serif";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "#ffffff";
-        ctx.fillText(w.text, 12, 34);
-        w.mat.map.needsUpdate = true;
-      });
-    }).catch(() => {});
+  const proj = new THREE.Vector3();
+  // Half sizes in whole pixels, so each tag lands on the pixel grid (half-pixel text looks soft)
+  function measureWords() {
+    words.forEach((w) => {
+      w.hw = Math.round(w.el.offsetWidth / 2);
+      w.hh = Math.round(w.el.offsetHeight / 2);
+    });
   }
-  let wordDark = true;
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureWords);
 
   const tmp = new THREE.Vector3();
   const from = new THREE.Vector3();
@@ -338,11 +327,23 @@ function start(hero) {
     words.forEach((w) => {
       const t = (w.offset + time * w.speed) % 1;
       // Each word sits over its spot on the globe, drifts up a little, and fades in and out
-      tmp.copy(w.dir).multiplyScalar(R + 4 + t * 6).add(EARTH);
-      w.sprite.position.copy(tmp);
-      const fade = Math.pow(Math.sin(t * Math.PI), 1.5);
-      w.mat.opacity = fade * (wordDark ? 0.85 : 0.75);
-      w.mat.color.copy(sigTint);
+      tmp.copy(w.dir).multiplyScalar(R + 4 + w.lift + t * 6).add(EARTH);
+      proj.copy(tmp).project(camera);
+      // Fully visible for most of its life, with a short fade in and out
+      const edge = Math.min(1, t / 0.15, (1 - t) / 0.15);
+      const fade = edge * edge * (3 - 2 * edge);
+      if (proj.z > 1) {
+        w.el.style.opacity = "0";
+        return;
+      }
+      if (!w.hw) w.hw = Math.round(w.el.offsetWidth / 2);
+      if (!w.hh) w.hh = Math.round(w.el.offsetHeight / 2);
+      const x = Math.round(((proj.x + 1) / 2) * W) - w.hw;
+      const y = Math.round(((1 - proj.y) / 2) * H) - w.hh;
+      w.el.style.transform = `translate(${x}px, ${y}px)`;
+      // Hide a tag that would be cut off by the screen edge
+      const inside = x >= 8 && x + w.hw * 2 <= W - 8;
+      w.el.style.opacity = inside ? fade.toFixed(2) : "0";
     });
   }
 
@@ -384,11 +385,6 @@ function start(hero) {
     sigMat.needsUpdate = true;
     sigTint = tint.clone();
     sigBoost = dark ? 2.4 : 1;
-    wordDark = dark;
-    words.forEach((w) => {
-      w.mat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
-      w.mat.needsUpdate = true;
-    });
     bloom.strength = dark ? 0.6 : 0.15;
     bloom.threshold = dark ? 0.7 : 1.2;
     scene.environmentIntensity = dark ? 0.6 : 0.55;
@@ -433,6 +429,55 @@ function start(hero) {
     camera.position.set(pointer.ex * 5 + sway, 4 - pointer.ey * 2 + p * 10, portrait ? 120 : 70);
     look.set(pointer.ex * 2, (portrait ? 14 : 4) - p * 6, -90);
     camera.lookAt(look);
+    camera.updateMatrixWorld();
+  }
+
+  /* ---------- Drag to turn the globe ---------- */
+  // Phones only: swiping left and right spins the Earth on its axis. Text and links keep their
+  // normal behaviour, and vertical swipes still scroll the page. Desktop has no drag.
+  const phone = window.matchMedia("(max-width: 767px)");
+  const baseQuat = earth.quaternion.clone();
+  const tiltQuat = new THREE.Quaternion();
+  const X_AXIS = V(1, 0, 0);
+  const drag = { on: false, id: null, x: 0, y: 0, yaw: 0, pitch: 0, vYaw: 0 };
+  const NO_DRAG = "a, button, input, textarea, select, label, h1, p, .hero-demo-wrap";
+  hero.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" || !phone.matches || e.target.closest(NO_DRAG)) return;
+    drag.on = true;
+    drag.id = e.pointerId;
+    drag.x = e.clientX;
+    drag.y = e.clientY;
+    drag.vYaw = 0;
+    hero.setPointerCapture(e.pointerId);
+    hero.classList.add("is-dragging");
+  });
+  hero.addEventListener("pointermove", (e) => {
+    if (!drag.on || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x;
+    const dy = e.clientY - drag.y;
+    drag.x = e.clientX;
+    drag.y = e.clientY;
+    drag.vYaw = dx * 0.004;
+    drag.yaw += drag.vYaw;
+    drag.pitch = Math.min(0.3, Math.max(-0.3, drag.pitch + dy * 0.003));
+    if (!running) renderStill();
+  });
+  const endDrag = (e) => {
+    if (!drag.on || e.pointerId !== drag.id) return;
+    drag.on = false;
+    hero.classList.remove("is-dragging");
+  };
+  hero.addEventListener("pointerup", endDrag);
+  hero.addEventListener("pointercancel", endDrag);
+  function applyDrag(animate) {
+    if (animate && !drag.on) {
+      // Let a flick carry on and slow down, and ease the tilt back to the resting view
+      drag.yaw += drag.vYaw;
+      drag.vYaw *= 0.94;
+      drag.pitch *= 0.985;
+    }
+    tiltQuat.setFromAxisAngle(X_AXIS, drag.pitch);
+    earth.quaternion.copy(tiltQuat).multiply(baseQuat);
   }
 
   /* ---------- Loop ---------- */
@@ -443,7 +488,8 @@ function start(hero) {
 
   function render(animate) {
     placeCamera(time, animate);
-    spin.rotation.y = Math.sin(time * 0.03) * 0.12;
+    applyDrag(animate);
+    spin.rotation.y = Math.sin(time * 0.03) * 0.12 + drag.yaw;
     starMat.uniforms.time.value = time;
     updateSignals(time);
     composer.render();
