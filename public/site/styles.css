@@ -1057,7 +1057,7 @@ select.input {
 }
 
 /* ---------- Hero: product demo sitting on the horizon ---------- */
-.hero3d { min-height: 0; padding-bottom: var(--s-800); }
+.hero3d { min-height: 100vh; min-height: 100svh; padding-bottom: 0; }
 .hero3d-canvas { height: 100vh; height: 100svh; bottom: auto; }
 .hero-demo-wrap {
   position: relative;
